@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<property file="build.properties"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="dist.dir" value="${basedir}/dist"/>
+	<property name="web.dir" value="${basedir}/WebContent"/>
+	
+	<property name="jdbc.file" value="${src.dir}/jdbc.properties"/>
+	<property name="antcontrib.dir" value="${dependency-lib.dir}/ant-contrib/ant-contrib/jars"/>
+	<property name="rename-packages.dir" value="${dependency-lib.dir}/appfuse/rename-packages/jars"/>
+	<property name="rename-packages.jar" value="${rename-packages.dir}/rename-packages-1.2.jar"/>
+	
+	<property name="javac.debug" value="true"/>
+    <property name="compile.deprecation" value="true"/>
+    <property name="compile.debug" value="true"/>
+    <property name="compile.optimize" value="false"/>
+	
+	<property file="${jdbc.file}"/>
+	
+	<property name="lib.dir" location="${web.dir}/WEB-INF/lib"/>
+	<property name="servlet.dir" location="${dependency-lib.dir}/servlet"/>
+    
+    <!-- =================================================================== -->
+    <!-- Classpaths                                                          -->
+    <!-- =================================================================== -->
+	<path id="properties">
+		<pathelement location="${src.dir}"/>
+	</path>
+	
+	<path id="lib.classpath">
+    	<fileset dir="${lib.dir}" includes="**/*.jar"/>
+		<fileset dir="${servlet.dir}" includes="**/*.jar"/>
+    </path>
+
+	<path id="new.classpath">
+		<fileset dir="${rename-packages.dir}" includes="*.jar"/>
+		<fileset dir="${antcontrib.dir}" includes="*.jar"/>
+    </path>
+	
+    
+</project>

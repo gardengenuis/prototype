@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+     
+	<bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+ 
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="*" rollback-for="Throwable"/>
+		</tx:attributes>
+	</tx:advice>
+ 
+	<aop:config>
+		<aop:pointcut id="userServicePointCut"
+			expression="execution(* org.garden.**.service..*(..)) || execution(* org.garden.web.prototype.service..*(..))" />
+			<!--expression="execution(* com.mkyong.users.service.*Service.*(..))" /-->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="userServicePointCut" />
+	</aop:config>
+	
+	<bean id="dao" class="org.garden.dao.hibernate.DAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysDepartmentDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysDepartmentDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysOperationDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysOperationDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysResourceDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysResourceDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysRoleDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysRoleDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysRoleResOperDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysRoleResOperDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysUserDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysUserDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysUserDepartmentDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysUserDepartmentDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysUserRoleDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysUserRoleDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysRoleDepartmentDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysRoleDepartmentDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysDictFieldDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysDictFieldDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="sysDictValueDAO" class="org.garden.sysadmin.dao.impl.hibernate.SysDictValueDAO">
+	    <property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+</beans>

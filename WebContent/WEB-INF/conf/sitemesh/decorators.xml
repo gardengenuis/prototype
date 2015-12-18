@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorators">
+	<!-- 此处用来定义不需要过滤的页面 -->  
+    <excludes>
+    	
+    </excludes>
+    
+    <!-- boostrap theme -->
+    
+    <!-- ADMIN login theme -->
+    <decorator name="bootstrap-theme-login" page="bootstrap-theme-login.jsp">
+        <pattern>/login.jsp</pattern>
+        <pattern>/login_authentication</pattern>
+    </decorator>
+    
+    <!-- ADMIN main frame theme -->
+    <decorator name="bootstrap-theme-main" page="bootstrap-theme-mainframe.jsp">
+        <pattern>/admin/index.do</pattern>
+    </decorator>
+    
+    <!-- ADMIN basic theme -->
+    <decorator name="bootstrap-theme-basic" page="bootstrap-theme-admin.jsp">
+        <pattern>/admin/*.do</pattern>
+    </decorator>
+    
+    <!-- ERROR theme -->
+    <decorator name="bootstrap-theme-error" page="bootstrap-theme-error.jsp">
+    </decorator>
+    
+    <!-- default theme -->
+    <decorator name="default-theme-basic" page="basic-theme.jsp">
+        <pattern>/basic/*</pattern>
+    </decorator>
+</decorators>

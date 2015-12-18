@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="prototype" default="war" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	
+	<import file="properties.xml"/>
+	<import file="rename-packages-macro.xml"/>
+	
+	<property name="project-name">prototype</property>
+	<property name="project-version">0.0.1</property>
+	
+	<target name="prepare">
+		<delete dir="${build.dir}" deleteonexit="true"/>
+		<delete dir="${dist.dir}" deleteonexit="true"/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+	</target>
+	
+	<target name="init-ivy">
+		<ivy:settings file="${ivy.dir}/ivysettings.xml"/>
+		<ivy:retrieve pattern="${lib.dir}/[artifact].[ext]"/>
+	</target>
+	
+	<target name="compile" depends="init-ivy">
+		<javac srcdir="${src.dir}"
+	                destdir="${build.dir}" debug="${compile.debug}"
+	                deprecation="${compile.deprecation}" optimize="${compile.optimize}" encoding="utf-8"
+	                classpathref="lib.classpath">
+		</javac>
+		<copy todir="${build.dir}">  
+            <fileset dir="${src.dir}">  
+                <include name="**/*.properties"/>  
+            </fileset>  
+        </copy>
+		<delete file="${lib.dir}/servlet-api.jar"/>
+		<delete file="${lib.dir}/jsp-api.jar"/>
+	</target>
+	
+	<target name="war" depends="prepare,compile">
+		<war warfile="${dist.dir}/${project-name}-${project-version}.war" webxml="${web.dir}/WEB-INF/web.xml">
+            <classes dir="${build.dir}"/>  
+            <fileset dir="${web.dir}"/>  
+        </war>  
+		<delete>
+			<fileset dir="${lib.dir}" includes="*.jar"/>  
+		</delete>
+	</target>
+	
+	<target name="gen-all" depends="gen-dao,gen-model"/>
+		
+	<target name="gen-dao" depends="gen-dao-infc,gen-dao-imp"/>
+	
+	<target name="gen-model" depends="init-ivy">
+		<java fork="true" failonerror="yes" classname="org.garden.codegen.CodeGen" classpathref="lib.classpath">
+			<!--
+			<jvmarg value="-Xdebug"/>
+			<jvmarg value="-Xnoagent"/>
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,address=5555,server=y,suspend=y"/>
+			-->
+			<arg value="${jdbc.file}"/>
+			<arg value="${codegen.tables}"/>
+			<arg value="${codegen.model.package}"/>
+			<arg value="${codegen.output.dir}"/>
+			<arg value="${codegen.template.model.dir}"/>
+			<arg value="${project-version}"/>
+			<arg value="${codegen.model.prefix}"/>
+			<arg value="${codegen.model.postfix}"/>
+		</java>
+	</target>
+	
+	<target name="gen-dao-infc" depends="init-ivy">
+		<java fork="true" failonerror="yes" classname="org.garden.codegen.CodeGen" classpathref="lib.classpath">
+			<arg value="${jdbc.file}"/>
+			<arg value="${codegen.tables}"/>
+			<arg value="${codegen.daoinfc.package}"/>
+			<arg value="${codegen.output.dir}"/>
+			<arg value="${codegen.template.daoinfc.dir}"/>
+			<arg value="${project-version}"/>
+			<arg value="${codegen.daoinfc.prefix}"/>
+			<arg value="${codegen.daoinfc.postfix}"/>
+		</java>
+	</target>
+	
+	<target name="gen-dao-imp" depends="init-ivy">
+		<java fork="true" failonerror="yes" classname="org.garden.codegen.CodeGen" classpathref="lib.classpath">
+			<arg value="${jdbc.file}"/>
+			<arg value="${codegen.tables}"/>
+			<arg value="${codegen.daoimp.package}"/>
+			<arg value="${codegen.output.dir}"/>
+			<arg value="${codegen.template.daoimp.dir}"/>
+			<arg value="${project-version}"/>
+			<arg value="${codegen.daoimp.prefix}"/>
+			<arg value="${codegen.daoimp.postfix}"/>
+		</java>
+	</target>
+	
+	<target name="gen-spring" depends="init-ivy">
+		<java fork="true" failonerror="yes" classname="org.garden.codegen.CodeGenSpring" classpathref="lib.classpath">
+			<arg value="${jdbc.file}"/>
+			<arg value="${codegen.tables}"/>
+			<arg value="${codegen.daoimp.package}"/>
+			<arg value="${codegen.output.dir}"/>
+			<arg value="${codegen.template.spring.dir}"/>
+			<arg value="${project-version}"/>
+		</java>
+	</target>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="new.classpath"/>
+	<target name="new">
+		<echo level="info">
++-------------------------------------------------------------+
+|    		-- 欢迎来到新建工程向导--     					
+|                                                             						
+| 新建一个工程你需要回答一下几个问题。  	
+|                                                  								
++-------------------------------------------------------------+
+		</echo>
+		<echo/>
+		<input message="你的应用名称 [myapp]?" addproperty="app.name" defaultvalue="myapp"/>
+		<input message="你想使用什么名称的包 [cn.com.jgarden]?" addproperty="new.pkg.name" defaultvalue="cn.com.jgarden"/>
+		
+		<echo level="info">正在创建工程'${app.name}'...</echo>
+		
+		<copy todir="../${app.name}">
+            <fileset dir="${basedir}">
+                <exclude name="build/**"/>
+                <exclude name="dist/**"/>
+                <exclude name="bin/**"/>
+            	<!--exclude name="test/**"/-->
+            	<exclude name="doc/**"/>
+            	<exclude name="gen/**"/>
+            	<exclude name=".svn/**"/>
+                <exclude name="*.log"/>
+                <exclude name="*.sh"/>
+            	<exclude name="rename-packages-macro.xml"/>
+                <include name="**"/>
+            </fileset>
+        </copy>
+		
+		<!-- replace app name -->
+        <replaceregexp flags="g">
+            <regexp pattern="prototype"/>
+            <substitution expression="${app.name}"/>
+            <fileset dir="../${app.name}">
+                <include name="build.xml"/>
+            	<include name=".project"/>
+            	<include name=".classpath"/>
+            	<include name=".settings/**"/>
+            	<include name="WebContent/WEB-INF/web.xml"/>
+                <!--exclude name="lib/rename-packages-*/*.xml"/>
+                <exclude name="src/**/*.java"/>
+                <exclude name="src/**/*.xml"/>
+                <exclude name="web/WEB-INF/*.xml"/>
+                <exclude name="web/WEB-INF/classes/log4j.properties"/>
+                <exclude name="web/WEB-INF/classes/mail.properties"/-->
+            </fileset>
+        </replaceregexp>
+		
+		<!-- Fix path for packages in build.xml -->
+        <replaceregexp flags="g" match="org.garden.web.${app.name}" replace="org.garden.web.prototype">
+            <fileset dir="../${app.name}">
+                <include name="build.xml"/>
+            </fileset>
+        </replaceregexp>
+		
+		<if>
+            <not><equals arg1="${new.pkg.name}" arg2="org.garden.web.prototype"/></not>
+            <then><rename-packages newPkgName="${new.pkg.name}" existingPkgName="org.garden.web.prototype"/></then>
+        </if>
+        
+	</target>
+		
+		
+	
+</project>
