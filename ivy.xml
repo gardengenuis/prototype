@@ -9,7 +9,8 @@
     	<dependency org="apache" name="velocity" rev="1.7"/>
     	<dependency org="apache" name="commons-collections" rev="3.2.1"/>
     	<dependency org="apache" name="commons-beanutils" rev="1.8.3"/>
-    	<dependency org="apache" name="commons-codec" rev="1.5"/>
+    	<dependency org="apache" name="commons-codec" rev="1.9"/>
+    	<dependency org="apache" name="commons-fileupload" rev="1.3.1"/>
     	<dependency org="ant-contrib" name="ant-contrib" rev="1.0b3"/>
     	<dependency org="jstl" name="jstl" rev="1.2"/>
     	<dependency org="log4j" name="log4j" rev="1.2.17"/>
@@ -18,6 +19,8 @@
     	<dependency org="jackson" name="jackson-annotations" rev="2.4.0"/>
     	<dependency org="jackson" name="jackson-core" rev="2.4.3"/>
     	<dependency org="jackson" name="jackson-databind" rev="2.4.3"/>
+    	<dependency org="json" name="json" rev="20140107"/>
+    	<dependency org="ueditor" name="ueditor" rev="1.1.2"/>
     	<dependency org="sitemesh" name="sitemesh" rev="2.4.2"/>
     	<dependency org="antlr" name="antlr" rev="2.7.7"/>
     	<dependency org="oracle" name="ojdbc" rev="5.0"/>
