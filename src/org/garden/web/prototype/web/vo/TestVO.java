@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2014, Garden Lee. All rights reserved.
+ * Copyright (c) 2004, 2015, Garden Lee. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -27,17 +27,30 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
-package org.garden.web.prototype.web;
-
-/**
- * Constants.java
- *
- * @author Garden
- * create on 2014年11月10日 下午5:19:48
  */
-public class Constants {
-	public static final String ERROR_MSG = "message";
+package org.garden.web.prototype.web.vo;
+
+/** 
+* @ClassName: TestVO 
+* @Description: TODO
+* @author Garden Lee
+* @date 2016年2月22日 下午4:11:48 
+*/
+public class TestVO {
+	private String name;
+	private Integer age;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
 	
-	public static final String WEB_UPLOAD_PATH_PREFIX = "upload";
+	
 }

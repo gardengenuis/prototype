@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2014, Garden Lee. All rights reserved.
+ * Copyright (c) 2004, 2015, Garden Lee. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -27,17 +27,41 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
-package org.garden.web.prototype.web;
-
-/**
- * Constants.java
- *
- * @author Garden
- * create on 2014年11月10日 下午5:19:48
  */
-public class Constants {
-	public static final String ERROR_MSG = "message";
+package org.garden.web.prototype.web.controller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.garden.web.prototype.web.Constants;
+import org.garden.web.prototype.web.utils.UploadUtils;
+import org.garden.web.prototype.web.vo.TestVO;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+/** 
+* @ClassName: FileUploadController 
+* @Description: TODO
+* @author Garden Lee
+* @date 2016年2月22日 下午1:32:26 
+*/
+@Controller
+public class FileUploadController {
+	private static Log log = LogFactory.getLog(FileUploadController.class);
 	
-	public static final String WEB_UPLOAD_PATH_PREFIX = "upload";
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+    public @ResponseBody String uploadFile(@RequestParam("file") MultipartFile file, @ModelAttribute TestVO vo, HttpServletRequest request) throws Exception {
+	
+		String path = UploadUtils.saveFile(file, Constants.WEB_UPLOAD_PATH_PREFIX, request.getSession().getServletContext().getRealPath(""));
+		
+		log.debug(path);
+		log.debug(vo.getName());
+		
+		return "upload";
+	}
 }

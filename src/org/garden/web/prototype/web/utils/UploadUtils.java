@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004, 2014, Garden Lee. All rights reserved.
+ * Copyright (c) 2004, 2015, Garden Lee. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -27,17 +27,37 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
-package org.garden.web.prototype.web;
-
-/**
- * Constants.java
- *
- * @author Garden
- * create on 2014年11月10日 下午5:19:48
  */
-public class Constants {
-	public static final String ERROR_MSG = "message";
+package org.garden.web.prototype.web.utils;
+
+import java.io.File;
+
+import org.garden.utils.RandomUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+/** 
+* @ClassName: UploadUtils 
+* @Description: TODO
+* @author Garden Lee
+* @date 2016年2月22日 下午1:46:30 
+*/
+public class UploadUtils {
 	
-	public static final String WEB_UPLOAD_PATH_PREFIX = "upload";
+	public static String saveFile(MultipartFile file, String pathPrefix, String contextPath) throws Exception {
+		String fullPath = contextPath + File.separator + pathPrefix;
+		File dir = new File(fullPath);
+		if (!dir.exists())
+            dir.mkdirs();
+		
+		String orgName = file.getOriginalFilename();
+		String extension = orgName.substring(orgName.lastIndexOf("."));
+		String path = File.separator + pathPrefix + File.separator + RandomUtils.getRandomString(20) + extension;
+		
+		File dest = new File(contextPath + File.separator + path);
+		
+		file.transferTo(dest);
+		
+		
+		return path;
+	}
 }
