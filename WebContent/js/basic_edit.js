@@ -27,8 +27,7 @@ $(document).on("click", "#editBtn", function(e) {
 			for ( var i=0; i<components.length; i++) {
 				if ( isEmpty($("#" + components[i] +targetId).val())
 						&& isNotEmpty($("#" + components[i] +targetId).attr("required"))) {
-					bootbox.alert("保存失败:[必填项不能为空]", function() {
-					});
+					popError("保存失败:[必填项不能为空]");
 					return;
 				}
 			}
@@ -51,16 +50,12 @@ $(document).on("click", "#editBtn", function(e) {
 				data: JSON.stringify(jsonData),
 				success: function (data) {
 					// JOPO json object
-					bootbox.alert("保存" + functionName + "ID:[" +eval("data.object." + idName) + "]成功", function() {
-						//$.get("<c:url value="/system/department/list.do"/>");
-						//location.href=successUrl;
+					popSuccess("保存" + functionName + "ID:[" +eval("data.object." + idName) + "]成功", function() {
 						location.reload();
 					});
 				},
 				error: function( jqXHR, textStatus, errorThrown) {
-					bootbox.alert("保存失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]", function() {
-						// do something
-					});
+					popError("保存失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]");
 				}
 			});
 			
@@ -75,53 +70,34 @@ $(document).on("click", "#editBtn", function(e) {
 	});
 	
 	$(document).on("click", "#deleteBtn", function(e) {
-        bootbox.dialog({
-        	message:"确认删除?",
-        	buttons: {
-        		danger: {
-        			label: "删除",
-        			className: "btn-danger",
-        			callback: function() {
-        				var jsonData = {};
-        				eval("jsonData." + idName + "='" + $(e.target).val() + "'");
-        		        //Example.show("uh oh, look out!");
-        				$.ajax({
-        					url: deleteUrl,
-        					type: "DELETE",
-        					beforeSend: function(xhr) {
-					            xhr.setRequestHeader("Accept", "application/json");
-					            xhr.setRequestHeader("Content-Type", "application/json");
-							},
-							datatype:"json",
-        					data: JSON.stringify(jsonData),
-        					success: function (data) {
-        						// JOPO json object
-        						if (data.code == "0") {// 成功
-	        						bootbox.alert("删除" + functionName + "ID:[" +eval("data.object." + idName) + "]成功", function() {
-	        							//$.get("<c:url value="/system/department/list.do"/>");
-	        							//location.href=successUrl;
-	        							location.reload();
-	        						});
-        						} else {
-        							bootbox.alert("删除" + functionName + "失败:[" + data.msg + "]");
-        						}
-        					},
-        					error: function( jqXHR, textStatus, errorThrown) {
-        						bootbox.alert("删除失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]", function() {
-        							// do something
+		popConfirm(
+				"确认删除?",
+				function() {
+    				var jsonData = {};
+    				eval("jsonData." + idName + "='" + $(e.target).val() + "'");
+    		        //Example.show("uh oh, look out!");
+    				$.ajax({
+    					url: deleteUrl,
+    					type: "DELETE",
+    					beforeSend: function(xhr) {
+				            xhr.setRequestHeader("Accept", "application/json");
+				            xhr.setRequestHeader("Content-Type", "application/json");
+						},
+						datatype:"json",
+    					data: JSON.stringify(jsonData),
+    					success: function (data) {
+    						// JOPO json object
+    						if (data.code == "0") {// 成功
+    							popSuccess("删除" + functionName + "ID:[" +eval("data.object." + idName) + "]成功", function() {
+        							location.reload();
         						});
-        					}
-        				});
-        		    }
-        		},
-        		main: {
-        			label: "取消",
-     				className: "btn-primary",
-     				callback: function() {
-        				//Example.show("Primary button");
-        				
-        			}
-        		}
-        	}
-        });
+    						} else {
+    							popError("删除" + functionName + "失败:[" + data.msg + "]");
+    						}
+    					},
+    					error: function( jqXHR, textStatus, errorThrown) {
+    						popError("删除失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]");
+    					}
+    				});
+				});
     });

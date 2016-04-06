@@ -29,19 +29,19 @@
 <script>
 $(document).on("click", "#saveBtn", function(e) {
 	if ( isEmpty($("#oldPassword").val())) {
-		bootbox.alert("请输入旧密码");
+		bootbox4frame.alert("请输入旧密码");
 		return;
 	}
 	if ( isEmpty($("#password").val())) {
-		bootbox.alert("请输入新密码");
+		bootbox4frame.alert("请输入新密码");
 		return;
 	}
 	if ( isEmpty($("#password_confirm").val())) {
-		bootbox.alert("请输入确认新密码");
+		bootbox4frame.alert("请输入确认新密码");
 		return;
 	}
 	if ($("#password_confirm").val() != $("#password").val()) {
-		bootbox.alert("确认密码与新密码不相同,请再输入一次");
+		bootbox4frame.alert("确认密码与新密码不相同,请再输入一次");
 		return;
 	}
 	
@@ -62,14 +62,14 @@ $(document).on("click", "#saveBtn", function(e) {
 		success: function (data) {
 			if ( data.code == "0") {
 				// JOPO json object
-				bootbox.alert("修改密码成功");
+				bootbox4frame.alert("修改密码成功");
 			} else {
-				bootbox.alert("修改密码失败:[" +data.msg+ "]")
+				bootbox4frame.alert("修改密码失败:[" +data.msg+ "]")
 			}
 			
 		},
 		error: function( jqXHR, textStatus, errorThrown) {
-			bootbox.alert("修改密码失败", function() {
+			bootbox4frame.alert("修改密码失败", function() {
 				// do something
 			});
 		}

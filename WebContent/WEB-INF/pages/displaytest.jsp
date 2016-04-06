@@ -130,10 +130,10 @@
 				},
 				datatype:"json",
 				success: function (data) {
-					bootbox.alert("成功");
+					bootbox4frame.alert("成功");
 				},
 				error: function( jqXHR, textStatus, errorThrown) {
-					bootbox.alert("保存失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]", function() {
+					bootbox4frame.alert("保存失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]", function() {
 						// do something
 					});
 				}

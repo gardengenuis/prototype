@@ -35,7 +35,7 @@
 <script>
 	function validate() {
 		if ( $("#password_confirm").val() != $("#password").val()) {
-			bootbox.alert("确认密码与新密码不相同,请再输入一次");
+			bootbox4frame.alert("确认密码与新密码不相同,请再输入一次");
 			return false;
 		} else {
 			return true;
@@ -46,7 +46,7 @@
 		var message = "${message}";
 		
 		if ( message != "") {
-			bootbox.alert(message);
+			bootbox4frame.alert(message);
 		}
 	});
 </script>	  	

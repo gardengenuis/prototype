@@ -37,7 +37,11 @@ package org.garden.web.prototype.web;
  * create on 2014年11月10日 下午5:19:48
  */
 public class Constants {
-	public static final String ERROR_MSG = "message";
+	public static final String MESSAGE_KEY = "message";
+
+	public static final String RESP_KEY = "returnResponse";
 	
 	public static final String WEB_UPLOAD_PATH_PREFIX = "upload";
+	
+	
 }

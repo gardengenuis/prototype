@@ -57,36 +57,6 @@
 			<display:setProperty name="paging.banner.item_name" value="资源" />
 			<display:setProperty name="paging.banner.items_name" value="资源" />
 		</display:table>
-		
-		
-	  	
-	</div>
-	
-	<!-- 弹出框（角色） -->
-	<div id="dialog-form-role" title="修改所属角色" style="display: none;">
-		<p class="validateTips">双击增加角色</p>
-			<form>
-				<table >
-					<thead>
-						<tr>
-			            	<th>选择角色</th>
-			            	<th>当前角色（双击可删除）</th>
-			          	</tr>
-			        </thead>
-					<tbody>
-						<tr>
-							<td align="left" valign="top" height="100%" width="50%">
-								<select name="select" size="10" id="roleBox2Choose" style="width:150px" multiple="multiple">
-								</select>
-							</td>
-							<td align="left" valign="top" height="100%" width="50%">
-								<select name="select" size="10" id="roleBox" style="width:150px" multiple="multiple">
-								</select>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</form>
 	</div>
 	
 	<script src="<c:url value="/js/validate.js"/>"></script>
@@ -101,162 +71,20 @@
 	</script>
 	
 	<!-- 修改角色 -->
-	<script>
-	var curEditResourceId;
-	
+	<script>	
 	$(document).ready(function() {
-		var dialog, form;
-
-		$("#roleBox").on('dblclick', 'option', function (e) {
-			$(e.target).remove();
-		});
-		
-		$("#roleBox2Choose").on('dblclick', 'option', function (e) {
-			if ( !containValue( $("#roleBox option"), $(e.target).val()) ) {
-				$("#roleBox").append("<option value='" + $(e.target).val() + "'>" +$(e.target).text() + "</option>");
-			}
-		});
-		
-		dialog = $( "#dialog-form-role" ).dialog({
-			autoOpen: false,
-			height: 400,
-			width: 400,
-			modal: true,
-			buttons: {
-				"保存": function() {
-					var roleIds = new Array();
-					$("#roleBox option").each(function(){ //遍历全部option
-				        var val = $(this).val(); //获取option的内容
-				        roleIds.push(val); //添加到数组中
-				    });
-					var jsonData = {
-							resourceId: curEditResourceId,
-							roleId: roleIds
-					};
-					
-					$.ajax({
-						url: "<c:url value="/ajax/roleresource/add.do"/>",
-						type: "POST",
-						async:true,
-						beforeSend: function(xhr) {
-				            xhr.setRequestHeader("Accept", "application/json");
-				            xhr.setRequestHeader("Content-Type", "application/json");
-						},
-						datatype:"json",
-						data: JSON.stringify(jsonData),
-						success: function (data) {
-							// JOPO json object
-							if (data.code == "0") {// 成功
-								bootbox.alert("修改资源角色成功",function() {
-									//location.href="<c:url value="/admin/system/resource/edit.do"/>";
-									location.reload();
-								});
-								
-							} else {
-								bootbox.alert("获取资源角色失败:[" + data.msg + "]");
-							}
-						},
-						error: function( jqXHR, textStatus, errorThrown) {
-							bootbox.alert("修改资源角色失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]");
-						}
-					});
-		        	$( this ).dialog( "close" );
-		        },
-		        "取消": function() {
-		        	$(this).dialog("close");
-		        }
-			},
-			close: function() {
-				form[0].reset();
-			}
-		});
-		 /*
-		form = dialog.find( "form" ).on( "submit", function( event ) {
-			event.preventDefault();
-		});
-		*/
-		$("button[id^='editRoleBtn']").on( "click", function(e) {
-			curEditResourceId = $(this).val();
-			
-			var jsonData = {
-					resourceId: curEditResourceId
-			};
-			
-			$("#roleBox").empty();
-			$("#roleBox2Choose").empty();
-			
-			$.ajax({
-				url: "<c:url value="/ajax/roleresource/tree.do"/>",
-				type: "POST",
-				async:false,
-				beforeSend: function(xhr) {
-		            xhr.setRequestHeader("Accept", "application/json");
-		            xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				datatype:"json",
-				//data: JSON.stringify(jsonData),
-				success: function (data) {
-					// JOPO json object
-					if (data.code == "0") {// 成功
-						var roles = data.object;
-						for ( var i=0; i<roles.length; i++) {
-							var role = roles[i];
-							var option = "<option value='" + role.roleId + "'>" + role.roleName + "</option>";
-							$("#roleBox2Choose").append(option);
-						}
-					} else {
-						bootbox.alert("获取角色列表失败:[" + data.msg + "]");
-					}
-				},
-				error: function( jqXHR, textStatus, errorThrown) {
-					bootbox.alert("获取角色列表失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]");
-				}
-			});
-			
-			$.ajax({
-				url: "<c:url value="/ajax/roleresource/list.do"/>",
-				type: "POST",
-				async:false,	//同步执行
-				beforeSend: function(xhr) {
-		            xhr.setRequestHeader("Accept", "application/json");
-		            xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				datatype:"json",
-				data: JSON.stringify(jsonData),
-				success: function (data) {
-					// JOPO json object
-					if (data.code == "0") {// 成功
-						var roles = data.object;
-						for ( var i=0; i<roles.length; i++) {
-							var role = roles[i];
-							var option = "<option value='" + role.roleId + "'>" + role.roleName + "</option>";
-							$("#roleBox").append(option);
-						}
-					} else {
-						bootbox.alert("获取资源角色失败:[" + data.msg + "]");
-					}
-				},
-				error: function( jqXHR, textStatus, errorThrown) {
-					bootbox.alert("获取资源角色失败:[" + jqXHR.status + ": (" + jqXHR.statusText + ")]");
-				}
-			});
-			
-			dialog.dialog( "open" );
-		});
+		// 点击修改资源角色
+       	$("button[id^='editRoleBtn']").on( "click", function(e) {
+       		var resourceId = $(this).val();
+       		art.dialog.open("<c:url value="/admin/system/role/popup/pickRole.do?resourceId="/>" + resourceId, {
+       			title: "修改资源角色",
+       			width: "400px",
+       			height: "400px",
+       			fixed:true,
+       			lock:true
+       		});
+       	});
 	});
-	
-	 function containValue(target, id) {
-		   var rlt = false;
-		   target.each(function(){ //遍历全部option
-		        var value = $(this).val(); //获取option的内容
-
-				if ( id == value) {
-					rlt = true; 
-				}
-		    });
-		   
-			return rlt;
-		};
 	</script>
 </body>
 </html>

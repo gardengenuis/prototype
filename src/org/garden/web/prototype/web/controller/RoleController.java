@@ -30,13 +30,23 @@
  */ 
 package org.garden.web.prototype.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.garden.sysadmin.dao.model.SysRole;
+import org.garden.sysadmin.dao.model.SysRoleResOper;
+import org.garden.sysadmin.dao.model.SysRoleResOperItem;
+import org.garden.sysadmin.dao.model.SysUserRole;
+import org.garden.sysadmin.dao.model.SysUserRoleItem;
 import org.garden.sysadmin.service.SystemService;
+import org.garden.web.prototype.web.utils.FormUtils;
 import org.garden.web.prototype.web.vo.JSONResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -47,6 +57,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * RoleController.java
@@ -143,4 +154,112 @@ public class RoleController {
 		
 		return jsonResponse;
 	}
+	
+	@RequestMapping(value="/role/popup/pickRole.do", method = RequestMethod.GET)
+	public String pickRole(Model model, HttpServletRequest request) {
+		String resourceId = request.getParameter("resourceId");
+		String userId = request.getParameter("userId");
+		
+		List<SysRole> selectedRole = null;
+		List<SysRole> allRole = null;
+		Map<Long, SysRole> selectetRoleMap = null;
+		
+		try {
+			allRole = systemService.getSysRoles();
+			
+			if(StringUtils.isNotEmpty(userId)) {
+				selectedRole = systemService.getSysRoleByUserId(Long.parseLong(userId));
+			} else if(StringUtils.isNotEmpty(resourceId)) {
+				selectedRole = systemService.getSysRoleByResourceId(Long.parseLong(resourceId));
+			}
+			
+			selectetRoleMap = sysRole2Map(selectedRole);
+		} catch( Exception e) {
+			FormUtils.reponseError(e.getMessage(), model);
+			log.error(e);
+		}
+		
+		model.addAttribute("resourceId", resourceId);
+		model.addAttribute("userId", userId);
+		
+		model.addAttribute("roles", allRole);
+		model.addAttribute("selectetRole", selectetRoleMap);
+		
+		return "system/pickRole";
+	}
+	
+	@RequestMapping(value="/role/popup/updatePickRole.do", method = RequestMethod.POST)
+	public String updatePickRole(RedirectAttributes model, HttpServletRequest request) {
+		String resourceId = request.getParameter("resourceId");
+		String userId = request.getParameter("userId");
+		String[] roleIds = request.getParameterValues("roleId");
+		String param = null;
+		
+		try {
+			if(StringUtils.isNotEmpty(userId)) {	// 用户-角色
+				List<SysUserRole> list = new ArrayList<SysUserRole>();
+				
+				if( roleIds != null) {
+					for ( String roleId: roleIds) {
+						SysUserRole sysUserRole = new SysUserRole();
+						SysUserRoleItem sysUserRoleItem = new SysUserRoleItem();
+						
+						sysUserRoleItem.setRoleId(Long.parseLong(roleId));
+						sysUserRoleItem.setUserId(Long.parseLong(userId));
+						
+						sysUserRole.setSysUserRole(sysUserRoleItem);
+						
+						list.add(sysUserRole);
+					}
+				}
+				
+				systemService.removeAndSaveUserRole(Long.parseLong(userId), list);
+				param = "userId=" + userId;
+				
+			} else if(StringUtils.isNotEmpty(resourceId)) { // 资源-角色
+				List<SysRoleResOper> list = new ArrayList<SysRoleResOper>();
+				
+				if( roleIds != null) {
+					for ( String roleId: roleIds) {
+						SysRoleResOper sysRoleResOper = new SysRoleResOper();
+						SysRoleResOperItem sysRoleResOperItem = new SysRoleResOperItem();
+						
+						sysRoleResOperItem.setRoleId(Long.parseLong(roleId));
+						sysRoleResOperItem.setResourceId(Long.parseLong(resourceId));
+						sysRoleResOperItem.setOperationId(1l);
+						
+						sysRoleResOper.setSysRoleResOper(sysRoleResOperItem);
+						
+						list.add(sysRoleResOper);
+					}
+				}
+				
+				systemService.removeAndSaveResourceRole(Long.parseLong(resourceId), list);
+				param = "resourceId=" + resourceId;
+			}
+			
+			FormUtils.redirectSucceed( model);
+		} catch(Exception e) {
+			FormUtils.redirectError(e.getMessage(), model);
+			log.error(e);
+		}
+		
+		return "redirect:/admin/system/role/popup/pickRole.do?" + param;
+	}
+
+	/**
+	 * @param selectedRole
+	 * @return
+	 */
+	private Map<Long, SysRole> sysRole2Map(List<SysRole> selectedRole) {
+		Map<Long, SysRole> rlt = new HashMap<Long, SysRole>();
+		
+		for(SysRole role : selectedRole) {
+			rlt.put(role.getRoleId(), role);
+		}
+		
+		return rlt;
+	}
+	
+	
 }

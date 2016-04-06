@@ -1,6 +1,6 @@
 <%@ include file="/common/taglibs.jsp"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
+
 <div id="menu">
 	<!-- Static navbar -->
 	<nav class="navbar navbar-default navbar-static-top" role="navigation">
@@ -21,7 +21,7 @@
 						<c:choose>
 							<c:when test="${fn:length(menu.subMenus) > 0}">
 								<li class="dropdown">
-									<a class="dropdown-toggle" data-toggle="dropdown" href="#">${menu.name }<b class="caret"></b></a>
+									<a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" href="#">${menu.name }<b class="caret"></b></a>
 									<ul class="dropdown-menu">
 										<c:forEach var="subMenu" items="${menu.subMenus}">
 											<c:set var="subMenu" value="${subMenu}" scope="request"/>
@@ -41,7 +41,7 @@
 				<ul class="nav navbar-nav navbar-right ">
 					<li><a href="#" onclick="openURL('<c:url value="/admin/desktop.do"/>', this)"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp;桌面</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;<c:out value="${username}"/> <span class="caret"></span></a>
+						data-toggle="dropdown" data-hover="dropdown"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;<c:out value="${username}"/> <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#" onclick="openURL('<c:url value="/admin/changePass.do"/>', this)"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>&nbsp;修改密码</a></li>
 							<li><a href="<c:url value="/logout_authentication"/>"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;退出</a></li>

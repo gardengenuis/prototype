@@ -77,6 +77,6 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	}
 
 	public void showMessage(HttpServletRequest request, String msg) {
-		request.setAttribute( Constants.ERROR_MSG, msg);
+		request.setAttribute( Constants.MESSAGE_KEY, msg);
 	}
 }

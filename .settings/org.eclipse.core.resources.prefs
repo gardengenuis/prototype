@@ -1,10 +1,9 @@
 eclipse.preferences.version=1
 encoding//WebContent/WEB-INF/conf/conf.properties=UTF-8
 encoding//WebContent/WEB-INF/pages/index.jsp=UTF-8
+encoding//WebContent/common/basic.jsp=UTF-8
 encoding//WebContent/common/bootstrap/menu.jsp=UTF-8
-encoding//WebContent/common/css.jsp=UTF-8
 encoding//WebContent/common/header.jsp=UTF-8
-encoding//WebContent/common/js.jsp=UTF-8
 encoding//WebContent/decorators/bootstrap-theme-mainframe.jsp=UTF-8
 encoding//WebContent/index.jsp=UTF-8
 encoding//src/jdbc.properties=UTF-8

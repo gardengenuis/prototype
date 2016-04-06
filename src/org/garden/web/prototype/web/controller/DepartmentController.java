@@ -30,13 +30,21 @@
  */ 
 package org.garden.web.prototype.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.garden.sysadmin.dao.model.SysDepartment;
+import org.garden.sysadmin.dao.model.SysUserDepartment;
+import org.garden.sysadmin.dao.model.SysUserDepartmentItem;
 import org.garden.sysadmin.service.SystemService;
+import org.garden.web.prototype.web.utils.FormUtils;
 import org.garden.web.prototype.web.vo.JSONResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -47,6 +55,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * SystemController.java
@@ -124,6 +133,73 @@ public class DepartmentController {
 		return "system/addDepartment";
 	}
 	
+	@RequestMapping(value="/role/popup/pickDepartment.do", method = RequestMethod.GET)
+	public String pickDepartment(Model model, HttpServletRequest request) {
+		String userId = request.getParameter("userId");
+		
+		List<SysDepartment> selectedDepart = null;
+		List<SysDepartment> allDepart = null;
+		Map<Long, SysDepartment> selectetDepartMap = null;
+		
+		try {
+			allDepart = systemService.getDepartments();
+			
+			if(StringUtils.isNotEmpty(userId)) {
+				selectedDepart = systemService.getDepartmentByUserId(Long.parseLong(userId));
+			}
+			
+			selectetDepartMap = sysDepart2Map(selectedDepart);
+		} catch( Exception e) {
+			FormUtils.reponseError(e.getMessage(), model);
+			log.error(e);
+		}
+		
+		model.addAttribute("userId", userId);
+		
+		model.addAttribute("departs", allDepart);
+		model.addAttribute("selectetDepart", selectetDepartMap);
+		
+		return "system/pickDepartment";
+	}
+	
+	@RequestMapping(value="/role/popup/updatePickDepart.do", method = RequestMethod.POST)
+	public String updatePickDepart(RedirectAttributes model, HttpServletRequest request) {
+		String userId = request.getParameter("userId");
+		String[] departIds = request.getParameterValues("departId");
+		String param = null;
+		
+		try {
+			if(StringUtils.isNotEmpty(userId)) {	// 用户-角色
+				List<SysUserDepartment> list = new ArrayList<SysUserDepartment>();
+				
+				if( departIds != null) {
+					for ( String departId: departIds) {
+						SysUserDepartment sysUserDepart = new SysUserDepartment();
+						SysUserDepartmentItem sysUserDepartItem = new SysUserDepartmentItem();
+						
+						sysUserDepartItem.setDepartId(Long.parseLong(departId));
+						sysUserDepartItem.setUserId(Long.parseLong(userId));
+						
+						sysUserDepart.setSysUserDepartment(sysUserDepartItem);
+						
+						list.add(sysUserDepart);
+					}
+				}
+				
+				systemService.removeAndSaveUserDepartment(Long.parseLong(userId), list);
+				param = "userId=" + userId;
+				
+			}
+			
+			FormUtils.redirectSucceed( model);
+		} catch(Exception e) {
+			FormUtils.redirectError(e.getMessage(), model);
+			log.error(e);
+		}
+		
+		return "redirect:/admin/system/role/popup/pickDepartment.do?" + param;
+	}
+	
 	@RequestMapping(value="/department/delete.do", method = RequestMethod.DELETE,
 			produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -147,5 +223,19 @@ public class DepartmentController {
 		jsonResponse.setObject(sysDepartment);
 		
 		return jsonResponse;
+	}
+	
+	/**
+	 * @param selectedRole
+	 * @return
+	 */
+	private Map<Long, SysDepartment> sysDepart2Map(List<SysDepartment> selectedDepart) {
+		Map<Long, SysDepartment> rlt = new HashMap<Long, SysDepartment>();
+		
+		for(SysDepartment depart : selectedDepart) {
+			rlt.put(depart.getDepartId(), depart);
+		}
+		
+		return rlt;
 	}
 }
