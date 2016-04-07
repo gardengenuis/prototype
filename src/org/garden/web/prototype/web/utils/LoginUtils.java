@@ -96,7 +96,7 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static List<SysDepartment> getLoginUserDepartment( HttpServletRequest request, SystemService systemService) {
+	public static List<SysDepartment> getUserDeparts( HttpServletRequest request, SystemService systemService) {
 		List<SysDepartment> departs = new ArrayList<SysDepartment>();
 		
 		UserDetails userDetails =
@@ -130,9 +130,9 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static Long[] getLoginUserDepartmentId( HttpServletRequest request, SystemService systemService) {
+	public static Long[] getUserDepartIds( HttpServletRequest request, SystemService systemService) {
 		List<Long> rlt = new ArrayList<Long>();
-		List<SysDepartment> depts = getLoginUserDepartment(request, systemService);
+		List<SysDepartment> depts = getUserDeparts(request, systemService);
 		
 		for ( SysDepartment dept : depts) {
 			rlt.add(dept.getDepartId());
@@ -148,7 +148,7 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static List<SysDepartment> getLoginUserAllDepartment( HttpServletRequest request, SystemService systemService) {
+	public static List<SysDepartment> getUserDepartTree( HttpServletRequest request, SystemService systemService) {
 		List<SysDepartment> departs = new ArrayList<SysDepartment>();
 		
 		UserDetails userDetails =
@@ -184,9 +184,9 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static Long[] getLoginUserAllDepartmentId( HttpServletRequest request, SystemService systemService) {
+	public static Long[] getUserDepartIdTree( HttpServletRequest request, SystemService systemService) {
 		List<Long> rlt = new ArrayList<Long>();
-		List<SysDepartment> depts = getLoginUserAllDepartment(request, systemService);
+		List<SysDepartment> depts = getUserDepartTree(request, systemService);
 		
 		for ( SysDepartment dept : depts) {
 			rlt.add(dept.getDepartId());

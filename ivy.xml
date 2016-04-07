@@ -59,10 +59,7 @@
     	<dependency org="spring-security" name="spring-security-core" rev="3.2.0"/>
     	<dependency org="spring-security" name="spring-security-web" rev="3.2.0"/>
     	<dependency org="spring-security" name="spring-security-config" rev="3.2.0"/>
-    	
-    	<!--dependency org="servlet" name="servlet-api" rev="2.5"/>
-    	<dependency org="servlet" name="jsp-api" rev="2.1"/-->
-    	
+    
         <dependency org="garden" name="utility-garden" rev="0.0.1"/>
         <dependency org="garden" name="dao-garden" rev="0.0.1"/>
         <dependency org="garden" name="security-garden" rev="0.0.1"/>

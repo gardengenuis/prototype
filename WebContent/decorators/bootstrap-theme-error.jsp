@@ -18,7 +18,7 @@
 	String code = request.getParameter("code");
 %>
 <body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/>>
-	
+	<div id="main_content">
 	<%
 		if ( "500".equals(code)) {
 	%>
@@ -83,5 +83,6 @@
 	%>
 	<hr />
 	<jsp:include page="/common/bootstrap/footer.jsp"/>
+	</div>
 </body>
 </html>

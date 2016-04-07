@@ -30,18 +30,25 @@
  */ 
 package org.garden.web.prototype.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.displaytag.tags.TableTagParameters;
 import org.displaytag.util.ParamEncoder;
 import org.garden.sysadmin.dao.model.SysResource;
+import org.garden.sysadmin.dao.model.SysRoleResOper;
+import org.garden.sysadmin.dao.model.SysRoleResOperItem;
 import org.garden.sysadmin.service.SystemService;
 import org.garden.utils.Pager;
 import org.garden.utils.TextUtils;
+import org.garden.web.prototype.web.utils.FormUtils;
 import org.garden.web.prototype.web.vo.JSONResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -52,6 +59,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * ResourceController.java
@@ -161,5 +169,85 @@ public class ResourceController {
 		jsonResponse.setObject(sysResource);
 		
 		return jsonResponse;
+	}
+	
+	@RequestMapping(value="/resource/popup/pickRes.do", method = RequestMethod.GET)
+	public String pickRes(Model model, HttpServletRequest request) {
+		String roleId = request.getParameter("roleId");
+		
+		List<SysResource> selectedRes = null;
+		List<SysResource> allRes = null;
+		Map<Long, SysResource> selectetResMap = null;
+		
+		try {
+			allRes = systemService.getSysResources();
+			
+			if(StringUtils.isNotEmpty(roleId)) {
+				selectedRes = systemService.getSysResourceByRoleId(Long.parseLong(roleId));
+			}
+			
+			selectetResMap = sysResource2Map(selectedRes);
+		} catch( Exception e) {
+			FormUtils.reponseError(e.getMessage(), model);
+			log.error(e);
+		}
+		
+		model.addAttribute("roleId", roleId);
+		
+		model.addAttribute("resources", allRes);
+		model.addAttribute("selectetRes", selectetResMap);
+		
+		return "system/pickRes";
+	}
+
+	@RequestMapping(value="/resource/popup/updatePickRes.do", method = RequestMethod.POST)
+	public String updatePickRes(RedirectAttributes model, HttpServletRequest request) {
+		String roleId = request.getParameter("roleId");
+		String[] resourceIds = request.getParameterValues("resourceId");
+		String param = null;
+		
+		try {
+			if(StringUtils.isNotEmpty(roleId)) { // 角色-资源
+				List<SysRoleResOper> list = new ArrayList<SysRoleResOper>();
+				
+				if( resourceIds != null) {
+					for ( String resourceId: resourceIds) {
+						SysRoleResOper sysRoleResOper = new SysRoleResOper();
+						SysRoleResOperItem sysRoleResOperItem = new SysRoleResOperItem();
+						
+						sysRoleResOperItem.setRoleId(Long.parseLong(roleId));
+						sysRoleResOperItem.setResourceId(Long.parseLong(resourceId));
+						sysRoleResOperItem.setOperationId(1l);
+						
+						sysRoleResOper.setSysRoleResOper(sysRoleResOperItem);
+						
+						list.add(sysRoleResOper);
+					}
+				}
+				
+				systemService.removeAndSaveResourceRoleByRoleId(Long.parseLong(roleId), list);
+				param = "roleId=" + roleId;
+			}
+			
+			FormUtils.redirectSucceed( model);
+		} catch(Exception e) {
+			FormUtils.redirectError(e.getMessage(), model);
+			log.error(e);
+		}
+		
+		return "redirect:/admin/system/resource/popup/pickRes.do?" + param;
+	}
+	/**
+	 * @param selectedRes
+	 * @return
+	 */
+	private Map<Long, SysResource> sysResource2Map(List<SysResource> selectedRes) {
+		Map<Long, SysResource> rlt = new HashMap<Long, SysResource>();
+		
+		for(SysResource res : selectedRes) {
+			rlt.put(res.getResourceId(), res);
+		}
+		
+		return rlt;
 	}
 }

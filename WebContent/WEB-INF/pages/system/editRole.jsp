@@ -30,6 +30,9 @@
 					<button id="editBtn" value="${roles.roleId }" type="button" class="btn btn-warning">修改</button>
 				</div>
 				<div class="btn-group">
+					<button id="editResBtn" value="${roles.roleId }" type="button" class="btn btn-info">修改拥有资源</button>
+				</div>
+				<div class="btn-group">
 					<button id="deleteBtn" value="${roles.roleId }" type="button" class="btn btn-danger">删除</button>
 				</div>
 			</display:column>
@@ -49,6 +52,23 @@
 	var successUrl = "<c:url value="/admin/system/role/edit.do"/>";
 	var functionName = "角色";
 	var idName = "roleId";
+	</script>
+	
+	<!-- 修改拥有资源 -->
+	<script>	
+	$(document).ready(function() {
+		// 点击修改角色资源
+       	$("button[id^='editResBtn']").on( "click", function(e) {
+       		var roleId = $(this).val();
+       		art.dialog.open("<c:url value="/admin/system/resource/popup/pickRes.do?roleId="/>" + roleId, {
+       			title: "修改角色资源",
+       			width: "400px",
+       			height: "400px",
+       			fixed:true,
+       			lock:true
+       		});
+       	});
+	});
 	</script>
 </body>
 </html>

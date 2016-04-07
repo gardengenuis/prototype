@@ -90,7 +90,8 @@ public class AdminController {
 		
 		List<SysResource> sysResources = systemService.getSysResourceByUserCode(userDetails.getUsername());
 
-
+		sysResources = getValidResource(sysResources);
+		
 		List<MenuVO> rootMenus = getMenusByParentId( sysResources, null);
 		
 		for ( MenuVO menu : rootMenus) {
@@ -103,6 +104,22 @@ public class AdminController {
 		return "index";
 	}
 	
+	/**
+	 * @param sysResources
+	 * @return
+	 */
+	private List<SysResource> getValidResource(List<SysResource> sysResources) {
+		List<SysResource> rlt = new ArrayList<SysResource>();
+		for( SysResource sysResource : sysResources) {
+			String status = sysResource.getStatus();
+			
+			if( status.equals("1")) {
+				rlt.add(sysResource);
+			}
+		}
+		return rlt;
+	}
+
 	/**
 	 * @param menu
 	 * @param sysResources
@@ -124,7 +141,6 @@ public class AdminController {
 		
 		for ( SysResource resource : sysResources) {
 			if ( resource.getResourceType().equals("1")) {
-				
 				if ( (resource.getParentId() != null
 						&& resource.getParentId().equals(parentId))
 						||  (resource.getParentId() == null
@@ -187,8 +203,8 @@ public class AdminController {
 	@RequestMapping(value="/test.do", method = RequestMethod.GET)
 	public String test(HttpServletRequest request, Model model) {
 		SysUser sysUser = LoginUtils.getLoginUser(request, systemService);
-		List<SysDepartment> departs = LoginUtils.getLoginUserDepartment(request, systemService);
-		List<SysDepartment> alldeparts = LoginUtils.getLoginUserAllDepartment(request, systemService);
+		List<SysDepartment> departs = LoginUtils.getUserDeparts(request, systemService);
+		List<SysDepartment> alldeparts = LoginUtils.getUserDepartTree(request, systemService);
 		
 		String pageIndexName =  new ParamEncoder("element").encodeParameterName(TableTagParameters.PARAMETER_PAGE);
 		List<SysResource> resources = systemService.getAllResources();
