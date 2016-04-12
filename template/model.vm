@@ -27,7 +27,6 @@ import java.util.Date;
 @Table(name="$params.get("table")" )
 public class $className implements Serializable {
 	private static final long serialVersionUID = ${serialId}L;
-	
 	#****************
 	set class properties
 	*****************#

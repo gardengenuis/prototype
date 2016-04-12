@@ -14,4 +14,5 @@
 	<bean id="systemService" class="org.garden.sysadmin.service.SystemService" autowire="byName" scope="singleton"/>
 
 	<bean id="baseService" class="org.garden.web.prototype.service.BaseService" autowire="byName" scope="singleton"/>
+
 </beans>

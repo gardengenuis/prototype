@@ -72,7 +72,7 @@ public class AdminController {
 	private static Log log = LogFactory.getLog(AdminController.class);
 	
 	private SystemService systemService;
-	
+
 	/**
 	 * @param systemService the systemService to set
 	 */
