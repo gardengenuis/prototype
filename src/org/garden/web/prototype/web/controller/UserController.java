@@ -32,6 +32,8 @@ package org.garden.web.prototype.web.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +41,7 @@ import org.garden.sysadmin.dao.model.SysDepartment;
 import org.garden.sysadmin.dao.model.SysRole;
 import org.garden.sysadmin.dao.model.SysUser;
 import org.garden.sysadmin.service.SystemService;
+import org.garden.web.prototype.web.utils.LoginUtils;
 import org.garden.web.prototype.web.vo.JSONResponse;
 import org.garden.web.security.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,8 +75,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/user/list.do", method = RequestMethod.GET)
-	public String listUser(Model model) {
-		List<SysUser> users = systemService.getSysUsers();
+	public String listUser(Model model, HttpServletRequest request) {
+		List<SysUser> users = systemService.getSysUsersByDeptIds(LoginUtils.getUserDepartIdTree(request, systemService));
 		
 		for ( SysUser user : users) {
 			List<SysDepartment> departments = systemService.getDepartmentByUserId(user.getUserId());
@@ -89,8 +92,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/user/edit.do", method = RequestMethod.GET)
-	public String editUser(Model model) {
-		List<SysUser> users = systemService.getSysUsers();
+	public String editUser(Model model, HttpServletRequest request) {
+		List<SysUser> users = systemService.getSysUsersByDeptIds(LoginUtils.getUserDepartIdTree(request, systemService));
 		
 		for ( SysUser user : users) {
 			List<SysDepartment> departments = systemService.getDepartmentByUserId(user.getUserId());

@@ -45,6 +45,7 @@ import org.garden.sysadmin.dao.model.SysUserDepartment;
 import org.garden.sysadmin.dao.model.SysUserDepartmentItem;
 import org.garden.sysadmin.service.SystemService;
 import org.garden.web.prototype.web.utils.FormUtils;
+import org.garden.web.prototype.web.utils.LoginUtils;
 import org.garden.web.prototype.web.vo.JSONResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -78,8 +79,8 @@ public class DepartmentController {
 	}
 	
 	@RequestMapping(value="/department/list.do", method = RequestMethod.GET)
-	public String listDepartment(Model model) {
-		List<SysDepartment> departments = systemService.getDepartments();
+	public String listDepartment(Model model, HttpServletRequest request) {
+		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
 		
 		model.addAttribute("departments", departments);
 		
@@ -87,8 +88,8 @@ public class DepartmentController {
 	}
 	
 	@RequestMapping(value="/department/edit.do", method = RequestMethod.GET)
-	public String editDepartment(Model model) {
-		List<SysDepartment> departments = systemService.getDepartments();
+	public String editDepartment(Model model, HttpServletRequest request) {
+		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
 		
 		model.addAttribute("departments", departments);
 		model.addAttribute("departs", departments);
@@ -118,9 +119,9 @@ public class DepartmentController {
 	}
 	
 	@RequestMapping(value="/department/add.do", method = RequestMethod.GET)
-	public String addDepartment(@ModelAttribute SysDepartment sysDepartment, Model model) {
+	public String addDepartment(@ModelAttribute SysDepartment sysDepartment, Model model, HttpServletRequest request) {
 		
-		List<SysDepartment> departments = systemService.getDepartments();
+		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
 		
 		model.addAttribute("departments", departments);
 		
@@ -142,7 +143,7 @@ public class DepartmentController {
 		Map<Long, SysDepartment> selectetDepartMap = null;
 		
 		try {
-			allDepart = systemService.getDepartments();
+			allDepart = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
 			
 			if(StringUtils.isNotEmpty(userId)) {
 				selectedDepart = systemService.getDepartmentByUserId(Long.parseLong(userId));
