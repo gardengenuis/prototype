@@ -34,18 +34,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.displaytag.tags.TableTagParameters;
-import org.displaytag.util.ParamEncoder;
-import org.garden.sysadmin.dao.model.SysDepartment;
 import org.garden.sysadmin.dao.model.SysResource;
 import org.garden.sysadmin.dao.model.SysUser;
 import org.garden.sysadmin.service.SystemService;
-import org.garden.web.prototype.web.utils.LoginUtils;
 import org.garden.web.prototype.web.vo.JSONResponse;
 import org.garden.web.prototype.web.vo.MenuVO;
 import org.garden.web.security.util.SecurityUtils;
@@ -61,7 +55,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * HomeController.java
+ * AdminController.java
  *
  * @author Garden
  * create on 2014年11月10日 下午5:07:26
@@ -200,17 +194,4 @@ public class AdminController {
 		return rlt;
 	}
 	
-	@RequestMapping(value="/test.do", method = RequestMethod.GET)
-	public String test(HttpServletRequest request, Model model) {
-		SysUser sysUser = LoginUtils.getLoginUser(request, systemService);
-		List<SysDepartment> departs = LoginUtils.getUserDeparts(request, systemService);
-		List<SysDepartment> alldeparts = LoginUtils.getUserDepartTree(request, systemService);
-		
-		String pageIndexName =  new ParamEncoder("element").encodeParameterName(TableTagParameters.PARAMETER_PAGE);
-		List<SysResource> resources = systemService.getAllResources();
-		
-		model.addAttribute("resources", resources);
-		
-		return "displaytest";
-	}
 }

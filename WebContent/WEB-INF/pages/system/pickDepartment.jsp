@@ -13,8 +13,9 @@
 </head>
 <body>
 	<div class="container">
-		<form class="form-horizontal" role="form" method="POST" action="<c:url value="/admin/system/role/popup/updatePickDepart.do"/>">
+		<form class="form-horizontal" role="form" method="POST" action="<c:url value="/admin/system/department/popup/updatePickDepart.do"/>">
 			<input type="hidden" name="userId" value="${userId }">
+			<input type="hidden" name="roleId" value="${roleId }">
 			<input type="hidden" name="resourceId" value="${resourceId }">
 			<div class="form-group">
 				<select id="departId" name="departId" multiple class="form-control">
@@ -40,7 +41,7 @@
 	});
 	
 	function process() {
-		form.action = "<c:url value="/admin/system/role/popup/updatePickDepart.do"/>";
+		form.action = "<c:url value="/admin/system/department/popup/updatePickDepart.do"/>";
 	}
 	</script>
 	

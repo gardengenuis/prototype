@@ -47,6 +47,7 @@ import org.garden.sysadmin.dao.model.SysUserRole;
 import org.garden.sysadmin.dao.model.SysUserRoleItem;
 import org.garden.sysadmin.service.SystemService;
 import org.garden.web.prototype.web.utils.FormUtils;
+import org.garden.web.prototype.web.utils.LoginUtils;
 import org.garden.web.prototype.web.vo.JSONResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -80,8 +81,8 @@ public class RoleController {
 	}
 	
 	@RequestMapping(value="/role/list.do", method = RequestMethod.GET)
-	public String listRole(Model model) {
-		List<SysRole> roles = systemService.getSysRoles();
+	public String listRole(Model model, HttpServletRequest request) {
+		List<SysRole> roles = systemService.getSysRolesByDepartIds(LoginUtils.getUserDepartIdTree(request, systemService));
 				
 		model.addAttribute("roles", roles);
 		

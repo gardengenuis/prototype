@@ -1,3 +1,4 @@
+#parse( "announce4Xml.vm" )
 #parse( "definition.vm" )
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
@@ -71,7 +72,7 @@
 			WHERE 1=1
 	</select>
 	
-	<select id="findBySql" parameterType="map" resultType="java.util.List" >
+	<select id="findBySql" parameterType="map" resultType="map" >
 			${sql}
 	</select>
 	
@@ -91,6 +92,13 @@
 			${tableName} ${shortName}
 			WHERE 1=1
 			<include refid="WHERE"/>
+	</select>
+	
+	<select id="countSql" parameterType="map" resultType="java.lang.Integer" >
+			SELECT 
+			count(1)
+			FROM 
+			(${sql})
 	</select>
 	
 	<!-- 

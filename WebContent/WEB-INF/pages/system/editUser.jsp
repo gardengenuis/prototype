@@ -42,10 +42,10 @@
 					<button id="editBtn" value="${users.userId }" type="button" class="btn btn-warning">修改</button>
 				</div>
 				<div class="btn-group">
-					<button id="editDeptBtn" value="${users.userId }" type="button" class="btn btn-info">修改所属部门</button>
+					<button id="editDeptBtn" value="${users.userId }" type="button" class="btn btn-info">所属部门</button>
 				</div>
 				<div class="btn-group">
-					<button id="editRoleBtn" value="${users.userId }" type="button" class="btn btn-info">修改角色</button>
+					<button id="editRoleBtn" value="${users.userId }" type="button" class="btn btn-info">拥有角色</button>
 				</div>
 				<div class="btn-group">
 					<button id="deleteBtn" value="${users.userId }" type="button" class="btn btn-danger">删除</button>
@@ -85,7 +85,7 @@
      	// 点击修改用户部门
        	$("button[id^='editDeptBtn']").on( "click", function(e) {
        		var userId = $(this).val();
-       		art.dialog.open("<c:url value="/admin/system/role/popup/pickDepartment.do?userId="/>" + userId, {
+       		art.dialog.open("<c:url value="/admin/system/department/popup/pickDepartment.do?userId="/>" + userId, {
        			title: "修改用户部门",
        			width: "400px",
        			height: "400px",

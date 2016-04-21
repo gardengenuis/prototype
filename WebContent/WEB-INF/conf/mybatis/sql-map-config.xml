@@ -4,6 +4,6 @@
 			"http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		
+		<typeAlias type="org.garden.sysadmin.dao.model.SysUser" alias="SysUser" />
 	</typeAliases>
 </configuration>

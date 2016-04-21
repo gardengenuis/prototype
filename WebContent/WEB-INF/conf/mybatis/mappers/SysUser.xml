@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SysUser">
+	<!-- 
+		base config
+	 -->
+	<sql id="COLUMN_ALIAS_SELECT">
+		su.USER_ID,		su.USER_CODE,		su.USER_NAME,		su.PASSWORD,		su.STATUS
+	</sql>
+	
+	<sql id="COLUMN_ALIAS_INSERT">
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="userId != null and userId != '' ">
+				USER_ID,
+			</if>
+			<if test="userCode != null and userCode != '' ">
+				USER_CODE,
+			</if>
+			<if test="userName != null and userName != '' ">
+				USER_NAME,
+			</if>
+			<if test="password != null and password != '' ">
+				PASSWORD,
+			</if>
+			<if test="status != null and status != '' ">
+				STATUS,
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="COLUMN_ALIAS_INSERT_VALUE">
+		<trim prefix="(" suffixOverrides="," suffix=")">
+			<if test="userId != null and userId != '' ">
+				#{userId},
+			</if>
+			<if test="userCode != null and userCode != '' ">
+				#{userCode},
+			</if>
+			<if test="userName != null and userName != '' ">
+				#{userName},
+			</if>
+			<if test="password != null and password != '' ">
+				#{password},
+			</if>
+			<if test="status != null and status != '' ">
+				#{status},
+			</if>
+		</trim>
+	</sql>
+	
+	<sql id="COLUMN_ALIAS_UPDATE">
+		<set>
+			<if test="userId != null and userId != '' ">
+				su.USER_ID=#{userId},
+			</if>
+			<if test="userCode != null and userCode != '' ">
+				su.USER_CODE=#{userCode},
+			</if>
+			<if test="userName != null and userName != '' ">
+				su.USER_NAME=#{userName},
+			</if>
+			<if test="password != null and password != '' ">
+				su.PASSWORD=#{password},
+			</if>
+			<if test="status != null and status != '' ">
+				su.STATUS=#{status},
+			</if>
+		</set>
+	</sql>
+	
+	<sql id="WHERE">
+		<if test="userId != null and userId != '' ">
+			AND su.USER_ID=#{userId}
+		</if>
+		<if test="userCode != null and userCode != '' ">
+			AND su.USER_CODE=#{userCode}
+		</if>
+		<if test="userName != null and userName != '' ">
+			AND su.USER_NAME=#{userName}
+		</if>
+		<if test="password != null and password != '' ">
+			AND su.PASSWORD=#{password}
+		</if>
+		<if test="status != null and status != '' ">
+			AND su.STATUS=#{status}
+		</if>
+	</sql>
+	
+	<!-- 
+		select function
+	 -->
+	<select id="query" parameterType="SysUser" resultType="SysUser" >
+			SELECT 
+			<include refid="COLUMN_ALIAS_SELECT"/>
+			FROM 
+			SYS_USER su
+			WHERE 1=1
+			<include refid="WHERE"/>
+	</select>
+	
+	<select id="findAll" parameterType="SysUser" resultType="SysUser" >
+			SELECT 
+			<include refid="COLUMN_ALIAS_SELECT"/>
+			FROM 
+			SYS_USER su
+			WHERE 1=1
+	</select>
+	
+	<select id="findBySql" parameterType="map" resultType="java.util.List" >
+			${sql}
+	</select>
+	
+	<select id="findById" parameterType="java.lang.Integer" resultType="SysUser" >
+			SELECT 
+			<include refid="COLUMN_ALIAS_SELECT"/>
+			FROM 
+			SYS_USER su
+			WHERE
+			ID=#{id}
+	</select>
+	
+	<select id="count" parameterType="SysUser" resultType="java.lang.Integer" >
+			SELECT 
+			count(1)
+			FROM 
+			SYS_USER su
+			WHERE 1=1
+			<include refid="WHERE"/>
+	</select>
+	
+	<!-- 
+		insert function
+	 -->
+	<insert id="insert" parameterType="SysUser">
+		INSERT INTO SYS_USER
+		<include refid="COLUMN_ALIAS_INSERT"/>
+		VALUES
+		<include refid="COLUMN_ALIAS_INSERT_VALUE"/>
+	</insert>
+	
+	<!-- 
+		update function
+	 -->
+	 <update id="update" parameterType="SysUser">
+	 	UPDATE SYS_USER su
+		<include refid="COLUMN_ALIAS_UPDATE"/>
+		WHERE
+		su.ID=#{id}
+	 </update>
+	 
+	 <!-- 
+	 	delete function
+	  -->
+	  <delete id="delete" parameterType="SysUser">
+	  	DELETE FROM SYS_USER WHERE ID=#{id}
+	  </delete>
+
+	  <delete id="deleteAll">
+	  	DELETE FROM SYS_USER
+	  </delete>
+</mapper>

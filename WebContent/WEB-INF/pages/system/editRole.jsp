@@ -30,7 +30,10 @@
 					<button id="editBtn" value="${roles.roleId }" type="button" class="btn btn-warning">修改</button>
 				</div>
 				<div class="btn-group">
-					<button id="editResBtn" value="${roles.roleId }" type="button" class="btn btn-info">修改拥有资源</button>
+					<button id="editDeptBtn" value="${roles.roleId }" type="button" class="btn btn-info">所属部门</button>
+				</div>
+				<div class="btn-group">
+					<button id="editResBtn" value="${roles.roleId }" type="button" class="btn btn-info">拥有资源</button>
 				</div>
 				<div class="btn-group">
 					<button id="deleteBtn" value="${roles.roleId }" type="button" class="btn btn-danger">删除</button>
@@ -62,6 +65,18 @@
        		var roleId = $(this).val();
        		art.dialog.open("<c:url value="/admin/system/resource/popup/pickRes.do?roleId="/>" + roleId, {
        			title: "修改角色资源",
+       			width: "400px",
+       			height: "400px",
+       			fixed:true,
+       			lock:true
+       		});
+       	});
+		
+     	// 点击修改角色部门
+       	$("button[id^='editDeptBtn']").on( "click", function(e) {
+       		var roleId = $(this).val();
+       		art.dialog.open("<c:url value="/admin/system/department/popup/pickDepartment.do?roleId="/>" + roleId, {
+       			title: "修改角色部门",
        			width: "400px",
        			height: "400px",
        			fixed:true,

@@ -41,6 +41,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.garden.sysadmin.dao.model.SysDepartment;
+import org.garden.sysadmin.dao.model.SysRoleDepartment;
+import org.garden.sysadmin.dao.model.SysRoleDepartmentItem;
 import org.garden.sysadmin.dao.model.SysUserDepartment;
 import org.garden.sysadmin.dao.model.SysUserDepartmentItem;
 import org.garden.sysadmin.service.SystemService;
@@ -134,9 +136,10 @@ public class DepartmentController {
 		return "system/addDepartment";
 	}
 	
-	@RequestMapping(value="/role/popup/pickDepartment.do", method = RequestMethod.GET)
+	@RequestMapping(value="/department/popup/pickDepartment.do", method = RequestMethod.GET)
 	public String pickDepartment(Model model, HttpServletRequest request) {
 		String userId = request.getParameter("userId");
+		String roleId = request.getParameter("roleId");
 		
 		List<SysDepartment> selectedDepart = null;
 		List<SysDepartment> allDepart = null;
@@ -147,6 +150,8 @@ public class DepartmentController {
 			
 			if(StringUtils.isNotEmpty(userId)) {
 				selectedDepart = systemService.getDepartmentByUserId(Long.parseLong(userId));
+			} else if(StringUtils.isNotEmpty(roleId)) {
+				selectedDepart = systemService.getDepartmentByRoleId(Long.parseLong(roleId));
 			}
 			
 			selectetDepartMap = sysDepart2Map(selectedDepart);
@@ -156,6 +161,7 @@ public class DepartmentController {
 		}
 		
 		model.addAttribute("userId", userId);
+		model.addAttribute("roleId", roleId);
 		
 		model.addAttribute("departs", allDepart);
 		model.addAttribute("selectetDepart", selectetDepartMap);
@@ -163,9 +169,10 @@ public class DepartmentController {
 		return "system/pickDepartment";
 	}
 	
-	@RequestMapping(value="/role/popup/updatePickDepart.do", method = RequestMethod.POST)
+	@RequestMapping(value="/department/popup/updatePickDepart.do", method = RequestMethod.POST)
 	public String updatePickDepart(RedirectAttributes model, HttpServletRequest request) {
 		String userId = request.getParameter("userId");
+		String roleId = request.getParameter("roleId");
 		String[] departIds = request.getParameterValues("departId");
 		String param = null;
 		
@@ -190,6 +197,25 @@ public class DepartmentController {
 				systemService.removeAndSaveUserDepartment(Long.parseLong(userId), list);
 				param = "userId=" + userId;
 				
+			} else if(StringUtils.isNotEmpty(roleId)) {	// 部门-角色
+				List<SysRoleDepartment> list = new ArrayList<SysRoleDepartment>();
+				
+				if( departIds != null) {
+					for ( String departId: departIds) {
+						SysRoleDepartment sysRoleDepart = new SysRoleDepartment();
+						SysRoleDepartmentItem sysRoleDepartItem = new SysRoleDepartmentItem();
+						
+						sysRoleDepartItem.setDepartId(Long.parseLong(departId));
+						sysRoleDepartItem.setRoleId(Long.parseLong(roleId));
+						
+						sysRoleDepart.setSysRoleDepartment(sysRoleDepartItem);
+						
+						list.add(sysRoleDepart);
+					}
+				}
+				
+				systemService.removeAndSaveRoleDepartment(Long.parseLong(roleId), list);
+				param = "roleId=" + roleId;
 			}
 			
 			FormUtils.redirectSucceed( model);
@@ -198,7 +224,7 @@ public class DepartmentController {
 			log.error(e);
 		}
 		
-		return "redirect:/admin/system/role/popup/pickDepartment.do?" + param;
+		return "redirect:/admin/system/department/popup/pickDepartment.do?" + param;
 	}
 	
 	@RequestMapping(value="/department/delete.do", method = RequestMethod.DELETE,
