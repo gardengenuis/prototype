@@ -29,3 +29,12 @@ function popDialog(type, content, onclose) {
 	    ]
 	});
 }
+
+function popTips( content) {
+	art.dialog.through({
+	    title: false,
+	    lock: true,
+	    fixed:true,
+	    content: content
+	});
+}

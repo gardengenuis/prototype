@@ -76,7 +76,7 @@ public class UserController {
 	
 	@RequestMapping(value="/user/list.do", method = RequestMethod.GET)
 	public String listUser(Model model, HttpServletRequest request) {
-		List<SysUser> users = systemService.getSysUsersByDeptIds(LoginUtils.getUserDepartIdTree(request, systemService));
+		List<SysUser> users = systemService.getSysUsersByDeptIds(LoginUtils.getUserDepartIdTree(request));
 		
 		for ( SysUser user : users) {
 			List<SysDepartment> departments = systemService.getDepartmentByUserId(user.getUserId());
@@ -93,7 +93,7 @@ public class UserController {
 	
 	@RequestMapping(value="/user/edit.do", method = RequestMethod.GET)
 	public String editUser(Model model, HttpServletRequest request) {
-		List<SysUser> users = systemService.getSysUsersByDeptIds(LoginUtils.getUserDepartIdTree(request, systemService));
+		List<SysUser> users = systemService.getSysUsersByDeptIds(LoginUtils.getUserDepartIdTree(request));
 		
 		for ( SysUser user : users) {
 			List<SysDepartment> departments = systemService.getDepartmentByUserId(user.getUserId());
@@ -138,7 +138,7 @@ public class UserController {
 		return jsonResponse;
 	}
 	
-	@RequestMapping(value="/user/add.do", method = RequestMethod.GET)
+	@RequestMapping(value="/user/add.do", method = {RequestMethod.POST,RequestMethod.GET})
 	public String addUser(@ModelAttribute SysUser sysUser, Model model) {
 		
 		if ( StringUtils.isNotEmpty(sysUser.getUserCode())) {

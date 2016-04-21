@@ -130,7 +130,7 @@ public class ResourceController {
 		return jsonResponse;
 	}
 	
-	@RequestMapping(value="/resource/add.do", method = RequestMethod.GET)
+	@RequestMapping(value="/resource/add.do", method = {RequestMethod.POST,RequestMethod.GET})
 	public String addResource(@ModelAttribute SysResource sysResource, Model model) {
 		
 		if ( sysResource.getResourceName() != null) {

@@ -10,6 +10,8 @@
 	http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/aop
 	http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<bean id="springUtils" class="org.garden.web.prototype.service.utils.SpringUtils" scope="singleton"/>
 
 	<bean id="systemService" class="org.garden.sysadmin.service.SystemService" autowire="byName" scope="singleton"/>
 

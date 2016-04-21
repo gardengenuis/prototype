@@ -82,7 +82,7 @@ public class DepartmentController {
 	
 	@RequestMapping(value="/department/list.do", method = RequestMethod.GET)
 	public String listDepartment(Model model, HttpServletRequest request) {
-		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
+		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request));
 		
 		model.addAttribute("departments", departments);
 		
@@ -91,7 +91,7 @@ public class DepartmentController {
 	
 	@RequestMapping(value="/department/edit.do", method = RequestMethod.GET)
 	public String editDepartment(Model model, HttpServletRequest request) {
-		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
+		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request));
 		
 		model.addAttribute("departments", departments);
 		model.addAttribute("departs", departments);
@@ -120,15 +120,17 @@ public class DepartmentController {
 		return jsonResponse;
 	}
 	
-	@RequestMapping(value="/department/add.do", method = RequestMethod.GET)
+	@RequestMapping(value="/department/add.do", method = {RequestMethod.POST,RequestMethod.GET})
 	public String addDepartment(@ModelAttribute SysDepartment sysDepartment, Model model, HttpServletRequest request) {
 		
-		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
+		List<SysDepartment> departments = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request));
 		
 		model.addAttribute("departments", departments);
 		
 		if ( StringUtils.isNotEmpty(sysDepartment.getDepartCode())) {
 			systemService.saveSysDepartment(sysDepartment);
+			
+			LoginUtils.refreshtUserDepartTree(request);
 			
 			return "redirect:/admin/system/department/list.do";
 		}
@@ -146,7 +148,7 @@ public class DepartmentController {
 		Map<Long, SysDepartment> selectetDepartMap = null;
 		
 		try {
-			allDepart = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request, systemService));
+			allDepart = systemService.getDepartments(LoginUtils.getUserDepartIdTree(request));
 			
 			if(StringUtils.isNotEmpty(userId)) {
 				selectedDepart = systemService.getDepartmentByUserId(Long.parseLong(userId));

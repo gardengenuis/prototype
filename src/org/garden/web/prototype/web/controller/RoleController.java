@@ -82,7 +82,7 @@ public class RoleController {
 	
 	@RequestMapping(value="/role/list.do", method = RequestMethod.GET)
 	public String listRole(Model model, HttpServletRequest request) {
-		List<SysRole> roles = systemService.getSysRolesByDepartIds(LoginUtils.getUserDepartIdTree(request, systemService));
+		List<SysRole> roles = systemService.getSysRolesByDepartIds(LoginUtils.getUserDepartIdTree(request));
 				
 		model.addAttribute("roles", roles);
 		
@@ -119,7 +119,7 @@ public class RoleController {
 		return jsonResponse;
 	}
 	
-	@RequestMapping(value="/role/add.do", method = RequestMethod.GET)
+	@RequestMapping(value="/role/add.do", method = {RequestMethod.POST,RequestMethod.GET})
 	public String addRole(@ModelAttribute SysRole sysRole, Model model) {
 		
 		if ( StringUtils.isNotEmpty(sysRole.getRoleCode())) {

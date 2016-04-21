@@ -40,6 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import org.garden.sysadmin.dao.model.SysDepartment;
 import org.garden.sysadmin.dao.model.SysUser;
 import org.garden.sysadmin.service.SystemService;
+import org.garden.web.prototype.service.utils.SpringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -64,7 +65,7 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static SysUser getLoginUser( HttpServletRequest request, SystemService systemService) {
+	public static SysUser getLoginUser( HttpServletRequest request) {
 		SysUser user = null;
 		
 		UserDetails userDetails =
@@ -74,6 +75,8 @@ public class LoginUtils {
 		Object obj = request.getSession().getAttribute(USER_SESSION);
 		
 		if ( obj == null) {
+			SystemService systemService = (SystemService) SpringUtils.getBean("systemService");
+			
 			user = systemService.getSysUserByUserCode(username);
 			
 			if ( user != null) {
@@ -96,7 +99,7 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static List<SysDepartment> getUserDeparts( HttpServletRequest request, SystemService systemService) {
+	public static List<SysDepartment> getUserDeparts( HttpServletRequest request) {
 		List<SysDepartment> departs = new ArrayList<SysDepartment>();
 		
 		UserDetails userDetails =
@@ -106,6 +109,8 @@ public class LoginUtils {
 		Object obj = request.getSession().getAttribute(DEPART_SESSION);
 		
 		if ( obj == null) {		
+			SystemService systemService = (SystemService) SpringUtils.getBean("systemService");
+			
 			departs = systemService.getDepartmentByUserCode(username);
 			
 			if ( departs != null
@@ -130,9 +135,9 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static Long[] getUserDepartIds( HttpServletRequest request, SystemService systemService) {
+	public static Long[] getUserDepartIds( HttpServletRequest request) {
 		List<Long> rlt = new ArrayList<Long>();
-		List<SysDepartment> depts = getUserDeparts(request, systemService);
+		List<SysDepartment> depts = getUserDeparts(request);
 		
 		for ( SysDepartment dept : depts) {
 			rlt.add(dept.getDepartId());
@@ -148,7 +153,7 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static List<SysDepartment> getUserDepartTree( HttpServletRequest request, SystemService systemService) {
+	public static List<SysDepartment> getUserDepartTree( HttpServletRequest request) {
 		List<SysDepartment> departs = new ArrayList<SysDepartment>();
 		
 		UserDetails userDetails =
@@ -158,6 +163,8 @@ public class LoginUtils {
 		Object obj = request.getSession().getAttribute(ALL_DEPART_SESSION);
 		
 		if ( obj == null) {		
+			SystemService systemService = (SystemService) SpringUtils.getBean("systemService");
+			
 			departs = systemService.getDepartmentByUserCode(username);
 			
 			getLowerDepartments(departs, systemService);
@@ -177,6 +184,10 @@ public class LoginUtils {
 		return departs;
 	}
 
+	public static void refreshtUserDepartTree( HttpServletRequest request) {
+		request.getSession().removeAttribute(ALL_DEPART_SESSION);
+		getUserDepartTree(request);
+	}
 	/**
 	 * 获取用户本级及下级的所有部门ID
 	 * 
@@ -184,9 +195,9 @@ public class LoginUtils {
 	 * @param systemService
 	 * @return
 	 */
-	public static Long[] getUserDepartIdTree( HttpServletRequest request, SystemService systemService) {
+	public static Long[] getUserDepartIdTree( HttpServletRequest request) {
 		List<Long> rlt = new ArrayList<Long>();
-		List<SysDepartment> depts = getUserDepartTree(request, systemService);
+		List<SysDepartment> depts = getUserDepartTree(request);
 		
 		for ( SysDepartment dept : depts) {
 			rlt.add(dept.getDepartId());

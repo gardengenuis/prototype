@@ -3,6 +3,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<script src="<c:url value="/js/form.js"/>"></script>
 	<title>部门管理</title>
 </head>
 <body>
