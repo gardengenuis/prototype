@@ -29,7 +29,7 @@
 	            <label for="password_confirm">确认密码</label>
 	            <input type="password" class="form-control" name="password_confirm" id="password_confirm" placeholder="确认用户密码" required>
 	        </div>
-	        <button type="submit" class="btn btn-primary">保存</button>
+	        <button type="submit" class="btn btn-success center-block"><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;保存</button>
 	    </form>
 <script src="<c:url value="/js/validate.js"/>"></script>
 <script>

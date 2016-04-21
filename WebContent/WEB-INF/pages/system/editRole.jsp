@@ -27,16 +27,16 @@
 		
 			<display:column escapeXml="false" title="操作" >
 				<div class="btn-group">
-					<button id="editBtn" value="${roles.roleId }" type="button" class="btn btn-warning">修改</button>
+					<button id="editBtn" value="${roles.roleId }" type="button" class="btn btn-warning glyphicon glyphicon-edit" title="修改"></button>
 				</div>
 				<div class="btn-group">
-					<button id="editDeptBtn" value="${roles.roleId }" type="button" class="btn btn-info">所属部门</button>
+					<button id="editDeptBtn" value="${roles.roleId }" type="button" class="btn btn-info glyphicon glyphicon-home" title="所属部门"></button>
 				</div>
 				<div class="btn-group">
-					<button id="editResBtn" value="${roles.roleId }" type="button" class="btn btn-info">拥有资源</button>
+					<button id="editResBtn" value="${roles.roleId }" type="button" class="btn btn-info glyphicon glyphicon-globe" title="拥有资源"></button>
 				</div>
 				<div class="btn-group">
-					<button id="deleteBtn" value="${roles.roleId }" type="button" class="btn btn-danger">删除</button>
+					<button id="deleteBtn" value="${roles.roleId }" type="button" class="btn btn-danger glyphicon glyphicon-trash" title="删除"></button>
 				</div>
 			</display:column>
 			

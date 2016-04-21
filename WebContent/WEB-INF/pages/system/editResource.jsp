@@ -45,13 +45,13 @@
 			</display:column>
 			<display:column escapeXml="false" title="操作" >
 				<div class="btn-group">
-					<button id="editBtn" value="${resources.resourceId }" type="button" class="btn btn-warning">修改</button>
+					<button id="editBtn" value="${resources.resourceId }" type="button" class="btn btn-warning glyphicon glyphicon-edit" title="修改"></button>
 				</div>
 				<div class="btn-group">
-					<button id="editRoleBtn" value="${resources.resourceId }" type="button" class="btn btn-info">修改所属角色</button>
+					<button id="editRoleBtn" value="${resources.resourceId }" type="button" class="btn btn-info glyphicon glyphicon-tower" title="所属角色"></button>
 				</div>
 				<div class="btn-group">
-					<button id="deleteBtn" value="${resources.resourceId }" type="button" class="btn btn-danger">删除</button>
+					<button id="deleteBtn" value="${resources.resourceId }" type="button" class="btn btn-danger glyphicon glyphicon-trash" title="删除"></button>
 				</div>
 			</display:column>
 			<display:setProperty name="paging.banner.item_name" value="资源" />

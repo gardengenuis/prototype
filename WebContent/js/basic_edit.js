@@ -8,7 +8,7 @@ var idName = "";
 
 $(document).on("click", "#editBtn", function(e) {
 		var targetId = $(e.target).val();
-		var oper = $(e.target).text();
+		var oper = $(e.target).attr("title");
 		
 		if (oper == '修改') { // 点击修改
 			
@@ -20,8 +20,10 @@ $(document).on("click", "#editBtn", function(e) {
 			}
 			
 			$(e.target).removeClass("btn-warning");
-			$(e.target).addClass("btn-info");
-			$(e.target).text("保存");
+			$(e.target).removeClass("glyphicon-edit");
+			$(e.target).addClass("btn-success");
+			$(e.target).addClass("glyphicon-floppy-saved");
+			$(e.target).attr("title", "保存");
 		} else {  // 点击保存
 			
 			for ( var i=0; i<components.length; i++) {
@@ -63,9 +65,11 @@ $(document).on("click", "#editBtn", function(e) {
 				$("#" + components[i] +targetId).attr("disabled",true);
 			}
 			
-			$(e.target).removeClass("btn-info");
+			$(e.target).removeClass("btn-success");
+			$(e.target).removeClass("glyphicon-floppy-saved");
 			$(e.target).addClass("btn-warning");
-			$(e.target).text("修改");
+			$(e.target).addClass("glyphicon-edit");
+			$(e.target).attr("title", "修改");
 		}
 	});
 	

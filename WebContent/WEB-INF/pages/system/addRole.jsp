@@ -23,7 +23,7 @@
 	            <label for="roleName">角色名称</label>
 	            <input type="text" class="form-control" name="roleName" id="roleName" placeholder="输入角色名称" required>
 	        </div>
-	        <button type="submit" class="btn btn-primary">保存</button>
+	        <button type="submit" class="btn btn-success center-block"><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;保存</button>
 	    </form>
 	  	
 	</div>

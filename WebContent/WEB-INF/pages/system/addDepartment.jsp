@@ -32,7 +32,7 @@
 						</c:forEach>
 					</select>
 			</div>
-	        <button type="submit" class="btn btn-primary">保存</button>
+			<button type="submit" class="btn btn-success center-block"><span class="glyphicon glyphicon-floppy-saved"></span>&nbsp;保存</button>
 	    </form>
 	  	
 	</div>

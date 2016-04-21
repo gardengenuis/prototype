@@ -40,10 +40,10 @@
 			
 			<display:column escapeXml="false" title="操作" >
 				<div class="btn-group">
-					<button id="editBtn" value="${departments.departId }" type="button" class="btn btn-warning">修改</button>
+					<button id="editBtn" value="${departments.departId }" type="button" class="btn btn-warning glyphicon glyphicon-edit" title="修改"></button>
 				</div>
 				<div class="btn-group">
-					<button id="deleteBtn" value="${departments.departId }" type="button" class="btn btn-danger">删除</button>
+					<button id="deleteBtn" value="${departments.departId }" type="button" class="btn btn-danger glyphicon glyphicon-trash" title="删除"></button>
 				</div>
 			</display:column>
 			

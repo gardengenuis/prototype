@@ -39,16 +39,16 @@
 			</display:column>
 			<display:column escapeXml="false" title="操作" >
 				<div class="btn-group">
-					<button id="editBtn" value="${users.userId }" type="button" class="btn btn-warning">修改</button>
+					<button id="editBtn" value="${users.userId }" type="button" class="btn btn-warning glyphicon glyphicon-edit" title="修改"></button>
 				</div>
 				<div class="btn-group">
-					<button id="editDeptBtn" value="${users.userId }" type="button" class="btn btn-info">所属部门</button>
+					<button id="editDeptBtn" value="${users.userId }" type="button" class="btn btn-info glyphicon glyphicon-home" title="所属部门"></button>
 				</div>
 				<div class="btn-group">
-					<button id="editRoleBtn" value="${users.userId }" type="button" class="btn btn-info">拥有角色</button>
+					<button id="editRoleBtn" value="${users.userId }" type="button" class="btn btn-info glyphicon glyphicon-tower" title="拥有角色"></button>
 				</div>
 				<div class="btn-group">
-					<button id="deleteBtn" value="${users.userId }" type="button" class="btn btn-danger">删除</button>
+					<button id="deleteBtn" value="${users.userId }" type="button" class="btn btn-danger glyphicon glyphicon-trash" title="删除"></button>
 				</div>
 			</display:column>
 			
