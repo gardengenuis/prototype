@@ -19,8 +19,7 @@
 	<http pattern="/js/**" security="none"/>
 	<http pattern="/images/**" security="none"/>
 	<http pattern="/css/**" security="none"/>
-	<http pattern="/ueditor/**" security="none"/>
-	<http pattern="/artDialog/**" security="none"/>
+	<http pattern="/plugins/**" security="none"/>
 	<http pattern="/upload/**" security="none"/>
 	
 	<!-- ajax调用不用过滤 -->

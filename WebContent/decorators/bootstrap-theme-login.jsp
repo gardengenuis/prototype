@@ -17,7 +17,7 @@
 		padding-top: 40px;
 		padding-bottom: 40px;
 		background-color: #eee;
-		background: url("<c:url value="/images/common/abstract-water-flow.jpg"/>") top center no-repeat fixed;
+		background: url("<c:url value="/images/common/grass.jpg"/>") top center no-repeat fixed;
 		-webkit-background-size: cover;
 	 	 -moz-background-size: cover;
 	  	-o-background-size: cover;

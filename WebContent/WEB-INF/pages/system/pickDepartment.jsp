@@ -26,8 +26,8 @@
 			</div>
 			<div class="form-group">
 				<div class="span7 text-center">
-					<input type="submit" class="btn btn-success" value="保存" >
-					<button id="cancelBtn" type="button" class="btn btn-info " onClick="javascript:art.dialog.close()">取消</button>
+					<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-save"></span>保存</button>
+					<button id="cancelBtn" type="button" class="btn btn-danger" onClick="javascript:art.dialog.close()"><span class="glyphicon glyphicon-remove"></span>关闭</button>
 				</div>
 			</div>
 		</form>

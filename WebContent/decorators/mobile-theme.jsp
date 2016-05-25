@@ -10,33 +10,14 @@
 	<jsp:include page="/common/bootstrap/bootstrap-css.jsp"/>
 	<jsp:include page="/common/jquery-js.jsp"/>
 	<jsp:include page="/common/bootstrap/bootstrap-js.jsp"/>
-	<jsp:include page="/common/bootstrap/dropdown.jsp"/>
 	<jsp:include page="/common/dialog.jsp"/>
     <title><decorator:title /></title>
     <decorator:head />
-    <script type="text/javascript">
-	function reinitIframe() {
-	    try {
-	    	var realHeigth=$(window.frames["frameWin"].document).find("body").height();
-	    	alert(realHeigth);
-	    	if(realHeigth<500){
-	    		realHeigth=500;
-	    	}
-	    	$("#frameWin").height(realHeigth);
-	    } catch (ex) { }
-	}
-	
-	function init(obj){
-		reinitIframe();
-	}
-	</script>
 </head>
 <body<decorator:getProperty property="body.id" writeEntireProperty="true"/><decorator:getProperty property="body.class" writeEntireProperty="true"/>>
-    <jsp:include page="/common/bootstrap/header.jsp"/>
-	
-	<iframe id="frameWin" name="frameWin" width="100%" height="500px" frameborder="0" src="<c:url value="desktop.do"/>" border=0 marginWidth=0 
-       			frameSpacing=0 marginHeight=0 width=100%  vspace="0" scrolling="no" onload="init(this);"/>
-
-
+	<div id="main_content">
+    <decorator:body />
+    <jsp:include page="/common/bootstrap/footer.jsp"/>
+    </div>
 </body>
 </html>

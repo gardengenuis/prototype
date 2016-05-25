@@ -22,7 +22,7 @@ $(document).on("click", "#editBtn", function(e) {
 			$(e.target).removeClass("btn-warning");
 			$(e.target).removeClass("glyphicon-edit");
 			$(e.target).addClass("btn-success");
-			$(e.target).addClass("glyphicon-floppy-saved");
+			$(e.target).addClass("glyphicon-save");
 			$(e.target).attr("title", "保存");
 		} else {  // 点击保存
 			
@@ -66,7 +66,7 @@ $(document).on("click", "#editBtn", function(e) {
 			}
 			
 			$(e.target).removeClass("btn-success");
-			$(e.target).removeClass("glyphicon-floppy-saved");
+			$(e.target).removeClass("glyphicon-save");
 			$(e.target).addClass("btn-warning");
 			$(e.target).addClass("glyphicon-edit");
 			$(e.target).attr("title", "修改");

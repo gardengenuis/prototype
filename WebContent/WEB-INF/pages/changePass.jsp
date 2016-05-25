@@ -22,26 +22,26 @@
 	            <label for="password_confirm">确认新密码</label>
 	            <input type="password" class="form-control" name="password_confirm" id="password_confirm" placeholder="确认用户新密码" required>
 	        </div>
-	        <button type="button" id="saveBtn" class="btn btn-primary">保存</button>
+	        <button type="button" id="saveBtn" class="btn btn-success center-block"><span class="glyphicon glyphicon-save"></span>&nbsp;保存</button>
 	    </form>
     </div>
 <script src="<c:url value="/js/validate.js"/>"></script>
 <script>
 $(document).on("click", "#saveBtn", function(e) {
 	if ( isEmpty($("#oldPassword").val())) {
-		bootbox4frame.alert("请输入旧密码");
+		popError("请输入旧密码");
 		return;
 	}
 	if ( isEmpty($("#password").val())) {
-		bootbox4frame.alert("请输入新密码");
+		popError("请输入新密码");
 		return;
 	}
 	if ( isEmpty($("#password_confirm").val())) {
-		bootbox4frame.alert("请输入确认新密码");
+		popError("请输入确认新密码");
 		return;
 	}
 	if ($("#password_confirm").val() != $("#password").val()) {
-		bootbox4frame.alert("确认密码与新密码不相同,请再输入一次");
+		popError("确认密码与新密码不相同,请再输入一次");
 		return;
 	}
 	
@@ -62,14 +62,14 @@ $(document).on("click", "#saveBtn", function(e) {
 		success: function (data) {
 			if ( data.code == "0") {
 				// JOPO json object
-				bootbox4frame.alert("修改密码成功");
+				popSuccess("修改密码成功");
 			} else {
-				bootbox4frame.alert("修改密码失败:[" +data.msg+ "]")
+				popError("修改密码失败:[" +data.msg+ "]")
 			}
 			
 		},
 		error: function( jqXHR, textStatus, errorThrown) {
-			bootbox4frame.alert("修改密码失败", function() {
+			popError("修改密码失败", function() {
 				// do something
 			});
 		}
