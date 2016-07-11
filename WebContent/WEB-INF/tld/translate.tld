@@ -66,6 +66,12 @@
       </attribute>
       
       <attribute>
+         <name>onChangeMethod</name>
+         <required>false</required>
+         <rtexprvalue>true</rtexprvalue>
+      </attribute>
+      
+      <attribute>
          <name>fieldValue</name>
          <required>false</required>
          <rtexprvalue>true</rtexprvalue>

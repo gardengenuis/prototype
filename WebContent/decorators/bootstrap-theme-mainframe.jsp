@@ -18,7 +18,6 @@
 	function reinitIframe() {
 	    try {
 	    	var realHeigth=$(window.frames["frameWin"].document).find("body").height();
-	    	alert(realHeigth);
 	    	if(realHeigth<500){
 	    		realHeigth=500;
 	    	}

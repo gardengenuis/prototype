@@ -66,7 +66,14 @@ public class CommonDictSelectTag extends TagSupport {
 	private boolean defaultEmpty = false;
 	private String emptyStr;
 	private String style;
+	private String onChangeMethod;
 
+	public String getOnChangeMethod() {
+		return onChangeMethod;
+	}
+	public void setOnChangeMethod(String onChangeMethod) {
+		this.onChangeMethod = onChangeMethod;
+	}
 	public String getStyle() {
 		return style;
 	}
@@ -225,7 +232,12 @@ public class CommonDictSelectTag extends TagSupport {
 					styleStr += "style=\"" + style + "\"";
 				}
 				
-				out.println("<select " + clazzStr + " " + idStr + " " + disabledStr + " " + requiredStr  + " " + styleStr + " " +  tagN + ">");
+				String ocm = "";
+				if ( StringUtils.isNotEmpty(onChangeMethod)) {
+					ocm += "onChange=\"" + onChangeMethod + "\"";
+				}
+				
+				out.println("<select " + clazzStr + " " + idStr + " " + disabledStr + " " + requiredStr  + " " + styleStr + " " +  tagN + " " + ocm + " >");
 				
 				if ( defaultEmpty) {
 					String emptyHints = "";
