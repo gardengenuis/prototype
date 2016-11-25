@@ -60,19 +60,27 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	public void onAuthenticationFailure(HttpServletRequest request,
 			HttpServletResponse response, AuthenticationException exception)
 			throws IOException, ServletException {
+		String msg = "";
+		String userName = request.getParameter("username");
+		String password = request.getParameter("password");
+		String agent = request.getHeader("user-agent");
 		if (exception.getClass().isAssignableFrom(
 				AuthenticationServiceException.class)) {
-			showMessage(request, "用户不存在");
+			msg = "用户不存在";
+			showMessage(request, msg);
 		} else if (exception.getClass().isAssignableFrom(
 				DisabledException.class)) {
 
 		} else if (exception.getClass().isAssignableFrom(
 				BadCredentialsException.class)) {
-			showMessage(request, "密码错误");
+			msg = "密码错误";
+			showMessage(request, msg);
 		} else {
-			showMessage(request, "未知登录错误");
+			msg = "未知登录错误";
+			showMessage(request, msg);
 		}
-		log.warn("!!!登录失败!!!:", exception);
+
+		log.warn("!!!登录失败!!!:原因:[" + msg + "],IP地址:[" + request.getRemoteAddr() + "],登录账号:[" + userName + "],密码:[" + password + "],AGENT:[" + agent + "]", exception);
 		super.onAuthenticationFailure(request, response, exception);
 	}
 
