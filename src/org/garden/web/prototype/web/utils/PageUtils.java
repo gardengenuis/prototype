@@ -30,6 +30,8 @@
  */
 package org.garden.web.prototype.web.utils;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.displaytag.tags.TableTagParameters;
@@ -119,5 +121,24 @@ public class PageUtils {
 	 */
 	public static Pager getPager(HttpServletRequest request, int itemsPerPage, int totalSize) {
 		return getPager(request, PageUtils.DEFAULT_PAGE_REQ_PARAM_NAME, itemsPerPage, totalSize);
+	}
+	
+	/**
+	 * 获取分页后的列表
+	 * 
+	 * @param list 原列表
+	 * @param pager 分页控件
+	 * @return
+	 */
+	public static <T> List<T> getPagerList(List<T> list, Pager pager) {
+		if( list == null) {
+			return null;
+		}
+		
+		Integer totalItems = list.size();
+		pager.setTotalItems(totalItems);
+		pager.calc();
+		
+		return list.subList(pager.getFirstResult(), pager.getLastResult());
 	}
 }
